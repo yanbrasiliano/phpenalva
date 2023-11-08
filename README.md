@@ -24,7 +24,7 @@ We're continually working on enhancing it to help you make the most of PHPenalva
 ### Contributing
 PHPenalva is an open-source project, and we warmly welcome contributions from the community. <br>
 Whether it's bug fixes, new features, or improvements, your input is valuable to us. <br>
-Please see our [CONTRIBUTING.md](https://github.com/phpenalva/CONTRIBUTING.md) for guidelines on how to contribute.
+Please see our [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute.
 
 ### License
 PHPenalva is released under the MIT License. For more details, please refer to the LICENSE file.<br>
