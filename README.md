@@ -1,4 +1,5 @@
 # PHPenalva 𓅓
+![logomarca](public/assets/images/logomarca.png)
 ### Overview
 PHPenalva is a lightweight PHP micro-framework designed on the Model-View-Controller (MVC) architecture.<br>
 Built with simplicity in mind, PHPenalva empowers you to swiftly create APIs and web applications.<br>
@@ -10,7 +11,9 @@ PHP Version: PHP 7.4 or higher is required.<br>
 Web Server: You'll need a web server with URL rewriting enabled.<br>
 Supported Servers: PHPenalva plays nicely with Apache, Nginx, and IIS.<br>
 Database Compatibility: PHPenalva is compatible with MySQL, MariaDB, PostgreSQL, and SQLite.<br>
+
 Platform: PHPenalva can be used on Linux, Windows, and macOS.<br>
+
 
 ### Installation
 Getting started with PHPenalva is a breeze. <br>
