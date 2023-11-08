@@ -8,7 +8,13 @@ class WelcomeController extends BaseController
 {
     public function index()
     {
-        $this->setPageTitle('Home'); // Defina o título da página aqui
+        $this->setPageTitle('Home');
         $this->renderView('layout');
+    }
+
+    public function contact()
+    {
+        $this->setPageTitle('Contact');
+        $this->renderView('/Home/contact');
     }
 }
