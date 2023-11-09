@@ -1,8 +1,25 @@
 <?php
 
-require __DIR__.'../../vendor/autoload.php';
+namespace Bootstrap;
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__.'/../');
+require __DIR__.'/../vendor/autoload.php';
+
+// Treats all errors as exceptions.
+set_exception_handler(function ($e) {
+    $errorDetails = [
+        'message' => $e->getMessage(),
+        'file' => $e->getFile(),
+        'line' => $e->getLine(),
+        'status_code' => 500,
+        'trace' => $e->getTraceAsString(),
+    ];
+
+    include __DIR__.'/../app/Views/System/exception.phtml';
+    exit;
+});
+
+// Loads environment variables from .env file.
+$dotenv = \Dotenv\Dotenv::createImmutable(__DIR__.'/../');
 $dotenv->load();
 
 /*

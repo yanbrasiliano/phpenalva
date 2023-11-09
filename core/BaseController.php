@@ -23,7 +23,7 @@ abstract class BaseController
         return __DIR__.'/../app/Views/'.$viewName.'.phtml';
     }
 
-    protected function renderView($viewName, $layoutName = null)
+    protected function renderView($viewName, $data = [], $layoutName = null)
     {
         $this->viewPath = $this->getViewPath($viewName);
         $this->layoutPath = $this->getViewPath($layoutName);
@@ -43,7 +43,7 @@ abstract class BaseController
             return require_once $file;
         }
 
-        throw new \Exception('Layout path not found.', 404);
+        $this->renderExceptionView(404, 'Layout path not found.');
     }
 
     protected function getContent()
@@ -54,7 +54,22 @@ abstract class BaseController
             return require_once $file;
         }
 
-        throw new \Exception('View path not found.', 404);
+        $this->renderExceptionView(404, 'View path not found.');
+    }
+
+    protected function renderExceptionView($statusCode, $message)
+    {
+        $errorDetails = [
+            'message' => $message,
+            'status_code' => $statusCode,
+        ];
+
+        $exceptionPath = $this->getViewPath('/System/exception');
+        if (file_exists($exceptionPath)) {
+            return require_once $exceptionPath;
+        }
+
+        throw new \Exception('Exception view not found.', 500);
     }
 
     protected function setPageTitle($pageTitle)

@@ -9,7 +9,7 @@ class WelcomeController extends BaseController
     public function index()
     {
         $this->setPageTitle('Home');
-        $this->renderView('layout');
+        $this->renderView('/System/layout');
     }
 
     public function contact()
