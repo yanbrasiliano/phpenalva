@@ -26,5 +26,10 @@ $dotenv->load();
 This file takes care of the initialization of all the files in the application.
 It is the first file to be called in the application.
 */
-$routes = require_once __DIR__.'/../routes/web.php';
-$router = new \Bootstrap\Routes($routes);
+// Routes for the web (web.php)
+$webRoutes = require_once __DIR__.'/../routes/web.php';
+$webRouter = new \Bootstrap\Routes($webRoutes, 'web');
+
+// Routes for the API (api.php)
+$apiRoutes = require_once __DIR__.'/../routes/api.php';
+$apiRouter = new \Bootstrap\Routes($apiRoutes, 'api');

@@ -20,6 +20,15 @@ abstract class BaseController
 
     protected function getViewPath($viewName)
     {
+        $possibleExtensions = ['.phtml', '.html'];
+
+        foreach ($possibleExtensions as $extension) {
+            $filePath = __DIR__.'/../app/Views/'.$viewName.$extension;
+            if (file_exists($filePath)) {
+                return $filePath;
+            }
+        }
+
         return __DIR__.'/../app/Views/'.$viewName.'.phtml';
     }
 

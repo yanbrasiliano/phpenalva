@@ -59,4 +59,37 @@ abstract class BaseModel
             return $e->getMessage();
         }
     }
+
+    public function update($data)
+    {
+        try {
+            $query = "UPDATE {$this->table} SET description = :description WHERE id = :id";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->bindValue(':description', $data['description']);
+            $stmt->bindValue(':id', $data['id']);
+            $stmt->execute();
+            $result = $stmt->rowCount();
+            $stmt->closeCursor();
+
+            return $result;
+        } catch (\PDOException $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function delete($id)
+    {
+        try {
+            $query = "DELETE FROM {$this->table} WHERE id = :id";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->bindValue(':id', $id);
+            $stmt->execute();
+            $result = $stmt->rowCount();
+            $stmt->closeCursor();
+
+            return $result;
+        } catch (\PDOException $e) {
+            return $e->getMessage();
+        }
+    }
 }

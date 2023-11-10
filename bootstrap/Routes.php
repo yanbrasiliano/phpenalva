@@ -5,9 +5,11 @@ namespace Bootstrap;
 class Routes
 {
     protected $routes;
+    protected $routeType;
 
-    public function __construct(array $routes)
+    public function __construct(array $routes, $routeType)
     {
+        $this->routeType = $routeType;
         $this->setRoutes($routes);
         $this->run();
     }
@@ -22,13 +24,15 @@ class Routes
         $newRoutes = [];
 
         foreach ($routes as $route) {
-            $parts = explode('@', $route[2]);
-            $newRoutes[] = [
-                'method' => $route[0],
-                'path' => $route[1],
-                'controller' => $parts[0],
-                'action' => $parts[1],
-            ];
+            if ($route[3] === $this->routeType || !isset($route[3])) {
+                $parts = explode('@', $route[2]);
+                $newRoutes[] = [
+                    'method' => $route[0],
+                    'path' => $route[1],
+                    'controller' => $parts[0],
+                    'action' => $parts[1],
+                ];
+            }
         }
 
         $this->routes = $newRoutes;
