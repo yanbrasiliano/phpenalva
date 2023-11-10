@@ -23,7 +23,7 @@ abstract class BaseController
         return __DIR__.'/../app/Views/'.$viewName.'.phtml';
     }
 
-    protected function renderView($viewName, $data = [], $layoutName = null)
+    protected function renderView($viewName, $layoutName = null)
     {
         $this->viewPath = $this->getViewPath($viewName);
         $this->layoutPath = $this->getViewPath($layoutName);

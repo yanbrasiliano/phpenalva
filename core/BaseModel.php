@@ -31,4 +31,32 @@ abstract class BaseModel
 
         return $result;
     }
+
+    public function getById($id)
+    {
+        $query = "SELECT * FROM {$this->table} WHERE id = :id";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
+        $result = $stmt->fetch();
+        $stmt->closeCursor();
+
+        return $result;
+    }
+
+    public function save($data)
+    {
+        try {
+            $query = "INSERT INTO {$this->table} (description) VALUES (:description)";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->bindValue(':description', $data['description']);
+            $stmt->execute();
+            $result = $this->pdo->lastInsertId();
+            $stmt->closeCursor();
+
+            return $result;
+        } catch (\PDOException $e) {
+            return $e->getMessage();
+        }
+    }
 }
