@@ -36,11 +36,13 @@ You can install it via Composer with the following command in your project direc
 <li><strong>DELETE /post/{id}:</strong> Delete an existing post. Send a DELETE request to this
 
 <br>
+<br>
 
 ### Documentation
 Our comprehensive documentation is readily available at {{TODO}}.<br>
 We're continually working on enhancing it to help you make the most of PHPenalva's features.
 
+<br>
 <br>
 
 ### Contributing
@@ -48,6 +50,7 @@ PHPenalva is an open-source project, and we warmly welcome contributions from th
 Whether it's bug fixes, new features, or improvements, your input is valuable to us. <br>
 Please see our [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute.
 
+<br>
 <br>
 
 ### License
