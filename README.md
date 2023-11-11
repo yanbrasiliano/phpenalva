@@ -20,9 +20,28 @@ Getting started with PHPenalva is a breeze. <br>
 You can install it via Composer with the following command in your project directory:<br>
 `composer require phpenalva/phpenalva`
 
+### Routes Example
+  <p>Here are some example routes that you can define in your PHPenalva application:</p>
+
+<strong>Route with views:</strong>
+ <li><strong>GET /posts:</strong> List all posts. Access it in your browser to view the posts.</li>
+                    <li><strong>GET /post/{id}:</strong> View details of a specific post. Replace {id} with the
+                        desired post ID in the URL.</li>
+            <br>
+            
+<strong>Route without views:</strong><br><br>
+<strong>POST /post:</strong> Create a new post. Send a POST request to this route with the
+                        required parameters to create a new post.</li>
+                    <li><strong>PUT /post/{id}:</strong> Update an existing post. Send a PUT request to this route
+                        with the required parameters to update an existing post. Replace {id} with the desired post ID
+                        in the URL.</li>
+                    <li><strong>DELETE /post/{id}:</strong> Delete an existing post. Send a DELETE request to this
+                      
 ### Documentation
 Our comprehensive documentation is readily available at {{TODO}}.<br>
 We're continually working on enhancing it to help you make the most of PHPenalva's features.
+
+
 
 ### Contributing
 PHPenalva is an open-source project, and we warmly welcome contributions from the community. <br>
