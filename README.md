@@ -1,4 +1,4 @@
-# PHPenalva 𓅓
+# PHPenalva a lightweight PHP micro-framework 𓅓
 ![logomarca](public/assets/images/logomarca.png)
 ### Overview
 PHPenalva is a lightweight PHP micro-framework designed on the Model-View-Controller (MVC) architecture.<br>
