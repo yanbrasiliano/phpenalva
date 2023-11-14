@@ -3,11 +3,13 @@
 namespace App\Controllers;
 
 use App\Models\Post;
+use App\Traits\RestResponseTrait;
 use Core\BaseController;
 use Core\BaseDatabase;
 
 class PostController extends BaseController
 {
+    use RestResponseTrait;
     public $model;
     public $connection;
     public $view;
@@ -52,6 +54,36 @@ class PostController extends BaseController
             $this->renderView('Posts/show');
         } catch (\PDOException $e) {
             $this->renderExceptionView($e->getCode() ?: 500, 'Error executing query: '.$e->getMessage());
+        }
+    }
+
+    public function store()
+    {
+        $conn = $this->connection->getDatabase();
+        $this->model = new Post($conn);
+    }
+
+    public function update($id)
+    {
+        $conn = $this->connection->getDatabase();
+        $this->model = new Post($conn);
+    }
+
+    public function delete($id)
+    {
+        echo 'delete';
+        $conn = $this->connection->getDatabase();
+        $this->model = new Post($conn);
+
+        try {
+            $this->model->delete($id);
+
+            return $this->successResponse([
+                'status' => 200,
+                'message' => 'Post deleted successfully',
+            ]);
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage());
         }
     }
 }
