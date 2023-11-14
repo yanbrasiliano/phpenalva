@@ -5,7 +5,7 @@
  */
 
 return [
-    'default' => 'postgres',
+    'default' => 'pgsql',
     'connections' => [
         'mysql' => [
             'driver' => 'mysql',

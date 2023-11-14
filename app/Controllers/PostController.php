@@ -54,29 +54,4 @@ class PostController extends BaseController
             $this->renderExceptionView($e->getCode() ?: 500, 'Error executing query: '.$e->getMessage());
         }
     }
-
-    public function create()
-    {
-        echo 'create';
-        try {
-            // $this->setPageTitle('Create Post');
-
-            // $conn = $this->connection->getDatabase();
-
-            // $this->model = new Post($conn);
-
-            // if ($request->method === 'POST') {
-            //     $this->model->description = $request->post->description;
-
-            //     $this->model->save();
-
-            //     header('Location: /posts');
-            //     exit;
-            // }
-
-            // $this->renderView('Posts/create');
-        } catch (\PDOException $e) {
-            $this->renderExceptionView($e->getCode() ?: 500, 'Error executing query: '.$e->getMessage());
-        }
-    }
 }
