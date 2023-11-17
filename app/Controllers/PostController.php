@@ -10,8 +10,8 @@ use Core\BaseDatabase;
 class PostController extends BaseController
 {
     use RestResponseTrait;
-    public $model;
-    public $connection;
+    private $model;
+    private BaseDatabase $connection;
     public $view;
 
     public function __construct()
@@ -57,21 +57,51 @@ class PostController extends BaseController
         }
     }
 
-    public function store()
+    public function store($request)
     {
         $conn = $this->connection->getDatabase();
         $this->model = new Post($conn);
+        try {
+            $data = [
+                'description' => $request->get->description,
+            ];
+            $this->model->save($data);
+
+            return $this->successResponse([
+                'status' => 200,
+                'message' => 'Post created successfully',
+            ]);
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage());
+        }
     }
 
-    public function update($id)
+    public function update($request, $id)
     {
-        $conn = $this->connection->getDatabase();
-        $this->model = new Post($conn);
+        // $conn = $this->connection->getDatabase();
+        // $this->model = new Post($conn);
+        echo '<pre>';
+        var_dump($request);
+        // try {
+        //     $id = $request;
+
+        //     $data = [
+        //         'description' => $request->get->description,
+        //     ];
+
+        //     $this->model->update($id, $data);
+
+        //     return $this->successResponse([
+        //         'status' => 200,
+        //         'message' => 'Post updated successfully',
+        //     ]);
+        // } catch (\Exception $e) {
+        //     return $this->errorResponse($e->getMessage());
+        // }
     }
 
     public function delete($id)
     {
-        echo 'delete';
         $conn = $this->connection->getDatabase();
         $this->model = new Post($conn);
 

@@ -44,12 +44,19 @@ abstract class BaseModel
         return $result;
     }
 
-    public function save($data)
+    public function save(array $data)
     {
         try {
-            $query = "INSERT INTO {$this->table} (description) VALUES (:description)";
+            $columns = implode(', ', array_keys($data));
+            $placeholders = ':'.implode(', :', array_keys($data));
+
+            $query = "INSERT INTO {$this->table} ({$columns}) VALUES ({$placeholders})";
             $stmt = $this->pdo->prepare($query);
-            $stmt->bindValue(':description', $data['description']);
+
+            foreach ($data as $key => $value) {
+                $stmt->bindValue(':'.$key, $value);
+            }
+
             $stmt->execute();
             $result = $this->pdo->lastInsertId();
             $stmt->closeCursor();
@@ -60,13 +67,18 @@ abstract class BaseModel
         }
     }
 
-    public function update($data)
+    public function update(array $data)
     {
         try {
-            $query = "UPDATE {$this->table} SET description = :description WHERE id = :id";
+            $setClause = implode(', ', array_map(fn ($key) => "$key = :$key", array_keys($data)));
+
+            $query = "UPDATE {$this->table} SET {$setClause} WHERE id = :id";
             $stmt = $this->pdo->prepare($query);
-            $stmt->bindValue(':description', $data['description']);
-            $stmt->bindValue(':id', $data['id']);
+
+            foreach ($data as $key => $value) {
+                $stmt->bindValue(':'.$key, $value);
+            }
+
             $stmt->execute();
             $result = $stmt->rowCount();
             $stmt->closeCursor();

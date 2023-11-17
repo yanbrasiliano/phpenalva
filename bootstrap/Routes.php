@@ -52,7 +52,7 @@ class Routes
             foreach ($this->routes as $route) {
                 $routeArray = explode('/', $route['path']);
 
-                if (count($urlArray) == count($routeArray)) {
+                if ($route['method'] == $_SERVER['REQUEST_METHOD'] && count($urlArray) == count($routeArray)) {
                     $matched = true;
                     $params = [];
 
