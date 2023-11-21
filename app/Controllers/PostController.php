@@ -76,28 +76,34 @@ class PostController extends BaseController
         }
     }
 
-    public function update($request, $id)
+    public function update($id, $request)
     {
-        // $conn = $this->connection->getDatabase();
-        // $this->model = new Post($conn);
-        echo '<pre>';
-        var_dump($request);
-        // try {
-        //     $id = $request;
+        $conn = $this->connection->getDatabase();
+        $this->model = new Post($conn);
 
-        //     $data = [
-        //         'description' => $request->get->description,
-        //     ];
+        if (!$this->model->exists($id)) {
+            return $this->errorResponse('Data is not found in the database.', 404);
+        }
 
-        //     $this->model->update($id, $data);
+        try {
+            $data = [
+                'id' => $id,
+                'description' => $request->get->description,
+            ];
 
-        //     return $this->successResponse([
-        //         'status' => 200,
-        //         'message' => 'Post updated successfully',
-        //     ]);
-        // } catch (\Exception $e) {
-        //     return $this->errorResponse($e->getMessage());
-        // }
+            $result = $this->model->update($data);
+
+            if ($result) {
+                return $this->successResponse([
+                    'status' => 200,
+                    'message' => 'Post updated successfully',
+                ]);
+            } else {
+                return $this->errorResponse('Failed to update post', 500);
+            }
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage());
+        }
     }
 
     public function delete($id)

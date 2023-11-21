@@ -89,6 +89,17 @@ abstract class BaseModel
         }
     }
 
+    public function exists($id)
+    {
+        $query = "SELECT COUNT(*) FROM {$this->table} WHERE id = :id";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
+        $count = $stmt->fetchColumn();
+
+        return $count > 0;
+    }
+
     public function delete($id)
     {
         try {
