@@ -6,11 +6,12 @@ use App\Models\Post;
 use App\Traits\RestResponseTrait;
 use Core\BaseController;
 use Core\BaseDatabase;
+use Core\BaseValidator;
 
 class PostController extends BaseController
 {
     use RestResponseTrait;
-    private $model;
+    private Post $model;
     private BaseDatabase $connection;
     public $view;
 
@@ -25,17 +26,17 @@ class PostController extends BaseController
         try {
             $this->setPageTitle('Posts');
 
-            // Estabeleça a conexão com o banco de dados
+            // Establish the database connection
             $conn = $this->connection->getDatabase();
 
-            // Crie uma instância do modelo Post com a conexão PDO
+            // Create an instance of the Post model with the PDO connection
             $this->model = new Post($conn);
 
             $this->view->posts = $this->model->getAll();
 
             $this->renderView('Posts/index');
         } catch (\PDOException $e) {
-            // Manipule erros de conexão ou consulta
+            // Handle connection or query errors
             $this->renderExceptionView($e->getCode() ?: 500, 'Error executing query: '.$e->getMessage());
         }
     }
@@ -61,10 +62,18 @@ class PostController extends BaseController
     {
         $conn = $this->connection->getDatabase();
         $this->model = new Post($conn);
+
         try {
             $data = [
                 'description' => $request->get->description,
             ];
+
+            $validatorErrors = BaseValidator::make($data, $this->model->rules());
+
+            if (!empty($validatorErrors)) {
+                return $this->errorResponse('Validation failed', 422, ['errors' => $validatorErrors]);
+            }
+
             $this->model->save($data);
 
             return $this->successResponse([
@@ -90,6 +99,12 @@ class PostController extends BaseController
                 'id' => $id,
                 'description' => $request->get->description,
             ];
+
+            $validatorErrors = BaseValidator::make($data, $this->model->rules());
+
+            if (!empty($validatorErrors)) {
+                return $this->errorResponse('Validation failed', 422, ['errors' => $validatorErrors]);
+            }
 
             $result = $this->model->update($data);
 

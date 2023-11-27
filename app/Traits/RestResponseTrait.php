@@ -17,9 +17,15 @@ trait RestResponseTrait
         $this->jsonResponse($data, $status);
     }
 
-    public function errorResponse(string $message, int $status = 500): void
+    public function errorResponse(string $message, int $status = 500, array $validationErrors = []): void
     {
-        $this->jsonResponse(['error' => $message], $status);
+        $errorData = ['error' => $message];
+
+        if (!empty($validationErrors)) {
+            $errorData['validation_errors'] = $validationErrors;
+        }
+
+        $this->jsonResponse($errorData, $status);
     }
 
     public function notFoundResponse(string $resource = 'Resource'): void

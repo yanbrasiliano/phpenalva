@@ -12,4 +12,11 @@ class Post extends BaseModel
     {
         parent::__construct($pdo);
     }
+
+    public function rules(): array
+    {
+        return [
+            'description' => 'required|min:6|max:255',
+        ];
+    }
 }
