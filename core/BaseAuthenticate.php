@@ -32,8 +32,16 @@ class BaseAuthenticate
             $this->badResponse('Invalid password', 400);
             exit;
         }
-
-        $_SESSION['user'] = $user;
+        if ($user && password_verify($password, $user['password'])) {
+            $user = [
+                'id' => $user['id'],
+                'name' => $user['name'],
+                'email' => $user['email'],
+                'role' => $user['role'],
+                'token' => $this->generateToken($user['id']),
+            ];
+            $_SESSION['user'] = $user;
+        }
 
         $this->successResponse($user, 200);
     }

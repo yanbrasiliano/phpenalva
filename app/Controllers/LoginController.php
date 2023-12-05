@@ -23,22 +23,24 @@ class Login extends BaseController
 
     public function login()
     {
-        $email = $this->request->email;
-        $password = $this->request->password;
+        \var_dump('aqui');
+        exit;
+        // $email = $this->request->email;
+        // $password = $this->request->password;
 
-        $user = $this->user->findByEmail($email);
+        // $user = $this->user->findByEmail($email);
 
-        if (!$user) {
-            return $this->response->json(['message' => 'User not found'], 404);
-        }
+        // if (!$user) {
+        //     return $this->response->json(['message' => 'User not found'], 404);
+        // }
 
-        if (!$this->verifyPassword($password, $user['password'])) {
-            return $this->response->json(['message' => 'Invalid password'], 401);
-        }
+        // if (!$this->verifyPassword($password, $user['password'])) {
+        //     return $this->response->json(['message' => 'Invalid password'], 401);
+        // }
 
-        $token = $this->generateToken($user['id']);
+        // $token = $this->generateToken($user['id']);
 
-        return $this->response->json(['token' => $token], 200);
+        // return $this->response->json(['token' => $token], 200);
     }
 
     public function logout()

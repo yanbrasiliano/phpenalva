@@ -29,6 +29,8 @@ class User extends BaseModel
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['email' => $email]);
 
-        return $stmt->fetch();
+        $user = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        return $user !== false ? $user : null;
     }
 }
