@@ -7,7 +7,9 @@ $route[] = ['GET', '/posts', 'PostController@index'];
 $route[] = ['GET', '/post/{id}', 'PostController@show'];
 $route[] = ['GET', '/user/create', 'UserController@store'];
 $route[] = ['DELETE', '/user/delete/{id}', 'UserController@delete'];
-$route[] = ['POST', '/login', 'LoginController@login'];
+
+$route[] = ['POST', '/login', 'AuthController@login'];
+$route[] = ['POST', '/logout', 'AuthController@logout'];
 // Routes for API
 $route[] = ['GET', '/api', 'WelcomeController@apiIndex'];
 $route[] = ['POST', '/api/posts', 'PostController@store'];
