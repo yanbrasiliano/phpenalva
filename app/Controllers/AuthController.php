@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\User;
 use App\Traits\RestResponseTrait;
+use Core\BaseAuthenticate;
 use Core\BaseController;
 use Core\BaseDatabase;
 
@@ -15,16 +16,13 @@ class AuthController extends BaseController
     public $view;
     protected $response;
     protected $request;
-
-    public function index()
-    {
-        echo 'index';
-    }
+    private BaseAuthenticate $auth;
 
     public function __construct()
     {
         $this->connection = new BaseDatabase();
         $this->model = new User($this->connection->getDatabase());
+        $this->auth = new BaseAuthenticate($this->model);
     }
 
     public function login($request)
@@ -40,58 +38,34 @@ class AuthController extends BaseController
             return $this->errorResponse('User not found', 404);
         }
 
-        if (!$this->verifyPassword($password, $user['password'])) {
+        if (!$this->auth->verifyPassword($password, $user['password'])) {
             return $this->errorResponse('Invalid password', 401);
         }
 
-        $token = $this->generateToken($user['id']);
+        session_start();
+        $_SESSION['user_id'] = $user['id'];
+
+        $token = $this->auth->generateToken($user['id']);
 
         return $this->successResponse([
-                'status' => 200,
-                'message' => 'Login success',
-                'token' => $token,
-            ]);
-    }
-
-    public function logout($request)
-    {
-        $request->session->destroy();
-
-        return $this->successResponse([
-                'status' => 200,
-                'message' => 'Logout success',
+            'status' => 200,
+            'message' => 'Login success',
+            'token' => $token,
         ]);
     }
 
-    private function verifyPassword($password, $hash)
+    public function logout()
     {
-        return password_verify($password, $hash);
-    }
+        session_start();
 
-    private function generateToken($id)
-    {
-        $header = [
-            'alg' => 'HS256',
-            'typ' => 'JWT',
-        ];
+        $userId = $_SESSION['user_id'];
 
-        $header = json_encode($header);
-        $header = base64_encode($header);
+        session_destroy();
 
-        $payload = [
-            'id' => $id,
-            'exp' => (new \DateTime())->modify('+1 day')->getTimestamp(),
-            'iat' => (new \DateTime())->getTimestamp(),
-        ];
-
-        $payload = json_encode($payload);
-        $payload = base64_encode($payload);
-
-        $signature = hash_hmac('sha256', "$header.$payload", getenv('SECRET_KEY'), true);
-        $signature = base64_encode($signature);
-
-        $token = "$header.$payload.$signature";
-
-        return $token;
+        return $this->successResponse([
+            'status' => 200,
+            'message' => 'Logout success',
+            'user_id' => $userId,
+        ]);
     }
 }

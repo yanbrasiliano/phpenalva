@@ -16,33 +16,35 @@ class BaseAuthenticate
         $this->user = $user;
     }
 
-    public function auth($request)
+    public function generateToken($id)
     {
-        $email = $request['email'];
-        $password = $request['password'];
+        $header = [
+            'alg' => 'HS256',
+            'typ' => 'JWT',
+        ];
 
-        $user = $this->user->findByEmail($email);
+        $header = json_encode($header);
+        $header = base64_encode($header);
 
-        if (!$user) {
-            $this->badResponse('User not found', 404);
-            exit;
-        }
+        $payload = [
+            'id' => $id,
+            'exp' => (new \DateTime())->modify('+1 day')->getTimestamp(),
+            'iat' => (new \DateTime())->getTimestamp(),
+        ];
 
-        if (!password_verify($password, $user['password'])) {
-            $this->badResponse('Invalid password', 400);
-            exit;
-        }
-        if ($user && password_verify($password, $user['password'])) {
-            $user = [
-                'id' => $user['id'],
-                'name' => $user['name'],
-                'email' => $user['email'],
-                'role' => $user['role'],
-                'token' => $this->generateToken($user['id']),
-            ];
-            $_SESSION['user'] = $user;
-        }
+        $payload = json_encode($payload);
+        $payload = base64_encode($payload);
 
-        $this->successResponse($user, 200);
+        $signature = hash_hmac('sha256', "$header.$payload", getenv('SECRET_KEY'), true);
+        $signature = base64_encode($signature);
+
+        $token = "$header.$payload.$signature";
+
+        return $token;
+    }
+
+    public function verifyPassword($password, $hash)
+    {
+        return password_verify($password, $hash);
     }
 }
