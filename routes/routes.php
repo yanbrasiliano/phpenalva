@@ -6,9 +6,9 @@ $route[] = ['GET', '/api', 'WelcomeController@apiIndex'];
 $route[] = ['POST', '/login', 'AuthController@login'];
 $route[] = ['POST', '/logout', 'AuthController@logout'];
 
-$route[] = ['POST', '/api/posts', 'PostController@store'];
+$route[] = ['POST', '/api/posts', 'PostController@store', 'auth'];
+$route[] = ['GET', '/posts', 'PostController@index', 'auth'];
 $route[] = ['GET', '/contact', 'WelcomeController@contact'];
-$route[] = ['GET', '/posts', 'PostController@index'];
 $route[] = ['GET', '/post/{id}', 'PostController@show'];
 $route[] = ['GET', '/user/create', 'UserController@store'];
 $route[] = ['DELETE', '/user/delete/{id}', 'UserController@delete'];
