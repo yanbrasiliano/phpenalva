@@ -26,17 +26,14 @@ class PostController extends BaseController
         try {
             $this->setPageTitle('Posts');
 
-            // Establish the database connection
             $conn = $this->connection->getDatabase();
 
-            // Create an instance of the Post model with the PDO connection
             $this->model = new Post($conn);
 
             $this->view->posts = $this->model->getAll();
 
             $this->renderView('Posts/index');
         } catch (\PDOException $e) {
-            // Handle connection or query errors
             $this->renderExceptionView($e->getCode() ?: 500, 'Error executing query: '.$e->getMessage());
         }
     }
