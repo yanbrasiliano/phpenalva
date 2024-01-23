@@ -35,6 +35,8 @@ You can install it via Composer with the following command in your project direc
 <li><strong>PUT /post/{id}:</strong> Update an existing post. Send a PUT request to this route with the required parameters to update an existing post. Replace {id} with the desired post ID in the URL.</li>
 <li><strong>DELETE /post/{id}:</strong> Delete an existing post. Send a DELETE request to this
 
+<strong>Authenticated Routes:</strong><br>
+To use route authentication in PHPenalva, add 'auth' to your route definition. For example: $route[] = ['GET', '/posts', 'PostController@index', 'auth'];. To access an authenticated route, you must log in via the /api/login route. If you don't have an account, create one using /user/create. You can then log in to your account via /api/login. After logging in, you'll receive an access token. You can use this token to access authenticated routes. To do so, add the token to the Authorization header of your request. For example: Authorization: Bearer {token}. Replace {token} with the access token you received after logging in. You can also use the token as a query parameter. For example: /posts?token={token}. Replace {token} with the access token you received after logging in.
 
 ### Documentation
 Our comprehensive documentation is readily available at {{TODO}}.<br>
