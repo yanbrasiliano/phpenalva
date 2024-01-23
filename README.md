@@ -18,7 +18,7 @@ Platform: PHPenalva can be used on Linux, Windows, and macOS.<br>
 ### Installation
 Getting started with PHPenalva is a breeze. <br>
 You can install it via Composer with the following command in your project directory:<br>
-`composer create-project phpenalva/phpenalva:dev-main`
+`composer create-project hiyan/phpenalva your_project_name`
 
 ### Routes Example
 <p>Here are some example routes that you can define in your PHPenalva application:</p>
