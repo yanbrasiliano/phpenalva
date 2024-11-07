@@ -39,10 +39,11 @@ abstract class BaseController
 
     if ($layoutName) {
       return $this->getLayout();
-    } else {
-      return $this->getContent();
     }
+
+    return $this->getContent();
   }
+
 
   protected function getLayout()
   {
@@ -85,15 +86,15 @@ abstract class BaseController
   {
     $this->pageTitle = $pageTitle;
   }
-
   protected function getPageTitle($separator = null)
   {
     if ($separator && !empty($this->pageTitle)) {
       return $this->pageTitle . ' ' . $separator . ' ';
-    } else {
-      return $this->pageTitle;
     }
+
+    return $this->pageTitle;
   }
+
 
   /**
    * Handle forbidden requests by returning an array with an error message.

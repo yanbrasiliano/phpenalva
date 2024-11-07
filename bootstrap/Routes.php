@@ -60,45 +60,54 @@ class Routes
       foreach ($this->routes as $route) {
         $routeArray = explode('/', $route['path']);
 
-        if ($route['method'] == $_SERVER['REQUEST_METHOD'] && count($urlArray) == count($routeArray)) {
-          $matched = true;
-          $params = [];
-
-          for ($i = 0; $i < count($routeArray); ++$i) {
-            if (strpos($routeArray[$i], '{') !== false) {
-              $params[] = $urlArray[$i];
-              $routeArray[$i] = $urlArray[$i];
-            } elseif ($routeArray[$i] != $urlArray[$i]) {
-              $matched = false;
-              break;
-            }
-          }
-
-          if ($matched) {
-            $controllerName = $route['controller'];
-            $controller = Controller::createController($controllerName);
-
-            if ($route['auth']) {
-              $conn = $this->connection->getDatabase();
-              $auth = new \Core\BaseAuthenticate(new \App\Models\User($conn));
-              if (!$auth->check()) {
-                $controller->forbidden();
-                return;
-              }
-            }
-
-            $action = $route['action'];
-            $request = $this->getRequest();
-            $params[] = $request;
-            call_user_func_array([$controller, $action], $params);
-            return;
-          }
+        if ($route['method'] !== $_SERVER['REQUEST_METHOD'] || count($urlArray) !== count($routeArray)) {
+          continue;
         }
+
+        $params = [];
+        $matched = array_reduce(array_keys($routeArray), function ($carry, $i) use ($routeArray, $urlArray, &$params) {
+          if (!$carry) {
+            return false;
+          }
+
+          $isParam = strpos($routeArray[$i], '{') !== false;
+          if ($isParam) {
+            $params[] = $urlArray[$i];
+            return true;
+          }
+
+          return $routeArray[$i] === $urlArray[$i];
+        }, true);
+
+        if (!$matched) {
+          continue;
+        }
+
+        $controllerName = $route['controller'];
+        $controller = Controller::createController($controllerName);
+
+        if ($route['auth'] && !$this->isAuthenticated()) {
+          $controller->forbidden();
+          return;
+        }
+
+        $action = $route['action'];
+        $request = $this->getRequest();
+        $params[] = $request;
+        call_user_func_array([$controller, $action], $params);
+        return;
       }
 
       return Controller::pageNotFound();
-    } catch (\Exception $e) {
-      echo 'Caught exception: ',  $e->getMessage(), "\n";
+    } catch (\Exception $exception) {
+      echo 'Caught exception: ', $exception->getMessage(), "\n";
     }
+  }
+
+  private function isAuthenticated()
+  {
+    $conn = $this->connection->getDatabase();
+    $auth = new \Core\BaseAuthenticate(new \App\Models\User($conn));
+    return $auth->check();
   }
 }
