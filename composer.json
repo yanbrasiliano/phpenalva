@@ -1,6 +1,6 @@
 {
   "name": "hiyan/phpenalva",
-  "description": "PHPenalva is a micro php framework for building web applications and simple APIS.",
+  "description": "PHPenalva is a micro php framework for building web applications and simple APIs.",
   "license": "MIT",
   "type": "project",
   "authors": [
@@ -26,5 +26,9 @@
   "require": {
     "php": ">=8.0.0",
     "vlucas/phpdotenv": "^5.5"
+  },
+  "scripts": {
+    "start": "docker compose -f .docker/docker-compose.yaml up -d",
+    "stop": "docker compose -f .docker/docker-compose.yaml down"
   }
 }

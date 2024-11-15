@@ -20,6 +20,10 @@
       border: 2px solid gray;
       border-radius: 10px;
     }
+
+    .modal-header .btn-close {
+      filter: brightness(0) invert(1);
+    }
   </style>
 
 </head>
@@ -39,17 +43,15 @@
             <hr>
             <p class="mb-0">
               <?php
-              if (isset($errorDetails)) {
-                echo '<strong>Error Message:</strong> ' . $errorDetails['message'] . '<br>';
-                echo '<strong>File:</strong> ' . $errorDetails['file'] . '<br>';
-                echo '<strong>Line:</strong> ' . $errorDetails['line'] . '<br>';
-                echo '<strong>Status Code:</strong> ' . $errorDetails['status_code'] . '<br>';
-                echo '<strong>Trace:</strong> ' . $errorDetails['trace'] . '<br>';
-                return;
-              }
+              echo isset($errorDetails['message']) ? "<strong>Error Message:</strong> {$errorDetails['message']}<br>" : '';
+              echo isset($errorDetails['file']) ? "<strong>File:</strong> {$errorDetails['file']}<br>" : '';
+              echo isset($errorDetails['line']) ? "<strong>Line:</strong> {$errorDetails['line']}<br>" : '';
+              echo isset($errorDetails['status_code']) ? "<strong>Status Code:</strong> {$errorDetails['status_code']}<br>" : '';
+              echo isset($errorDetails['trace']) ? "<strong>Trace:</strong> {$errorDetails['trace']}<br>" : '';
 
-              echo 'Error details not available.';
+              echo isset($errorDetails) ? '' : 'Error details not available.';
               ?>
+
             </p>
           </div>
           <div class="modal-footer">
