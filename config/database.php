@@ -25,7 +25,7 @@ return [
     ],
     'sqlite' => [
       'driver' => 'sqlite',
-      'database' => $_ENV['DB_DATABASE'] ?? 'phpenalva',
+      'database' => $_ENV['DB_DATABASE'] ?? __DIR__ . '/../database/database.sqlite',
       'prefix' => '',
     ],
     'sqlsrv' => [

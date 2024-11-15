@@ -47,38 +47,68 @@ With this setup, you can focus on developing with PHPenalva without worrying abo
 
 These commands make it easy to manage the environment, allowing you to work directly on the project with convenience! 🚀
 
-### Routes Example
-Here are some example routes that you can define in your PHPenalva application:
+### Migrations
 
-**Route with views:**
+PHPenalva includes a simple migration system that allows you to define and manage your database schema. The migration system is managed through classes and a custom Composer command, making it easy to create tables, modify columns, and keep track of changes over time.
 
-- **GET /posts**: List all posts. Access it in your browser to view the posts.
-- **GET /post/{id}**: View details of a specific post. Replace `{id}` with the desired post ID in the URL.
+#### How it Works
 
-**Route without views:**
+1. **Migration Classes**: Each migration is a PHP class stored in the `database/migrations` directory. These classes extend the base class `BaseMigration` and define two methods: `up()` (to apply the migration) and `down()` (to reverse it).
+   
+2. **Migration Manager**: The `MigrationManager` class, located in `core`, handles the execution of migrations. It checks for all migration files, applies any new migrations that haven't been executed yet, and logs them in a special table to keep track.
 
-- **POST /post**: Create a new post. Send a POST request to this route with the required parameters to create a new post.
-- **PUT /post/{id}**: Update an existing post. Send a PUT request to this route with the required parameters to update an existing post. Replace `{id}` with the desired post ID in the URL.
-- **DELETE /post/{id}**: Delete an existing post. Send a DELETE request to this route.
+3. **Custom Composer Command**: We’ve added a `composer migrate` command to simplify the execution of migrations. This command looks for all new migrations in the `database/migrations` directory and applies them.
 
-**Authenticated Routes:**
-To use route authentication in PHPenalva, add `'auth'` to your route definition. For example:
-```php
-$route[] = ['GET', '/posts', 'PostController@index', 'auth'];
+#### Running Migrations
+
+To apply all pending migrations, simply run:
+
+```bash
+composer migrate
 ```
-To access an authenticated route, you must log in via the `/api/login` route. If you don't have an account, create one using `/user/create`. After logging in, you'll receive an access token, which you can use to access authenticated routes. Add the token to the Authorization header of your request, e.g., `Authorization: Bearer {token}`, or use it as a query parameter, e.g., `/posts?token={token}`.
 
-### Documentation
-Our comprehensive documentation is readily available at {{TODO}}.<br>
-We're continually working on enhancing it to help you make the most of PHPenalva's features.
+This command will create a `migrations` table in the database (if it doesn’t already exist) to keep track of which migrations have been applied. Then, it will execute each migration's `up()` method that hasn't been applied yet.
 
-### Contributing
-PHPenalva is an open-source project, and we warmly welcome contributions from the community. <br>
-Whether it's bug fixes, new features, or improvements, your input is valuable to us. <br>
-Please see our [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute.
+#### Creating a New Migration
 
-### License
-PHPenalva is released under the MIT License. For more details, please refer to the LICENSE file.<br>
-If you need any assistance or have questions, don't hesitate to reach out to us.
+1. Create a new file in `database/migrations`, with a name that reflects the purpose of the migration (e.g., `CreateUsersTable.php`).
+   
+2. Define a class with the same name as the file and extend `Core\BaseMigration`.
 
-Thank you for choosing PHPenalva for your development needs! Enjoy coding with PHPenalva! 🚀🌐
+Example of a migration to create a `users` table:
+
+```php
+<?php
+
+use Core\BaseMigration;
+
+class CreateUsersTable extends BaseMigration
+{
+    public function up()
+    {
+        $this->execute("CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name VARCHAR(100),
+            email VARCHAR(100) UNIQUE,
+            password VARCHAR(255),
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )");
+    }
+
+    public function down()
+    {
+        $this->execute("DROP TABLE IF EXISTS users");
+    }
+}
+```
+
+#### Customizing the Migrations
+
+You can customize your migrations by editing the individual migration classes in `database/migrations`. Each class can contain any SQL statements needed to modify the schema as required. To apply specific changes, modify the `up()` method, and to undo those changes, modify the `down()` method.
+
+The migration system is flexible, allowing you to manage changes to the database schema over time, ensuring consistency across environments.
+
+---
+
+This section provides a straightforward way to manage your database schema changes with migrations, making it easy to apply and roll back changes using the `composer migrate` command.

@@ -20,7 +20,8 @@
       "Models\\": "app/Models/",
       "Views\\": "app/Views/",
       "Routes\\": "routes/",
-      "Bootstrap\\": "bootstrap/"
+      "Bootstrap\\": "bootstrap/",
+      "Database\\": "database/"
     }
   },
   "require": {
@@ -29,6 +30,8 @@
   },
   "scripts": {
     "start": "docker compose -f .docker/docker-compose.yaml up -d",
-    "stop": "docker compose -f .docker/docker-compose.yaml down"
+    "stop": "docker compose -f .docker/docker-compose.yaml down",
+    "restart": "docker compose -f .docker/docker-compose.yaml restart",
+    "migrate": "php config/migrate.php"
   }
 }
